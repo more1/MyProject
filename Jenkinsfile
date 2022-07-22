@@ -8,7 +8,16 @@ pipeline {
             }
         }
        
+         
+        stage("SonarQube analysis") {
+            steps {
+              withSonarQubeEnv('sonar') {
+                sh 'mvn -f SampleWebApp/pom.xml clean package sonar:sonar'
+              }
+            }
+          }
         
+       
         stage('Build with Maven') {
             steps {
                 sh 'cd SampleWebApp && mvn package'
