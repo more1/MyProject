@@ -7,20 +7,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/more1/MyProject.git'
             }
         }
-        
-        stage("SonarQube analysis") {
-            steps {
-              withSonarQubeEnv('sonar') {
-                sh 'mvn -f SampleWebApp/pom.xml clean package sonar:sonar'
-              }
-            }
-          }
-        
-        stage('Quality Gate') {
-            steps {
-                waitForQualityGate abortPipeline: true, credentialsId: 'sonar-cred'
-            }
-        }
+       
         
         stage('Build with Maven') {
             steps {
