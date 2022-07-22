@@ -2,11 +2,13 @@ pipeline {
     agent any
 
     stages {
+        
         stage('Git Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/more1/MyProject.git'
             }
         }
+        
         stage("SonarQube analysis") {
             steps {
               withSonarQubeEnv('sonar') {
@@ -14,6 +16,7 @@ pipeline {
               }
             }
           }
+        
         stage('Build with Maven') {
             steps {
                 sh 'cd SampleWebApp && mvn package'
