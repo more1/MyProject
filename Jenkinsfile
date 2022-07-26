@@ -25,6 +25,22 @@ pipeline {
                 sh 'cd SampleWebApp && mvn clean package -Dbuild.number=${BUILD_NUMBER}'
             }
         }
+         stage('Deploy to JFROG') {
+            steps {
+                
+                        rtUpload (
+            serverId: 'my-jfrog',
+            spec: '''{
+                  "files": [
+                    {
+                      "pattern": "**/*.war",
+                      "target": "my-repo/"
+                    }
+                 ]
+            }''',
+        )
+            }
+        }
         stage('Deploy to Tomcat') {
             steps {
                 deploy adapters: [tomcat9(credentialsId: 'mytomcat', 
