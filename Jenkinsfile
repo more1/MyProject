@@ -7,7 +7,15 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/more1/MyProject.git'
             }
         }
-       
+        
+       stage("SonarQube analysis") {
+            steps {
+              withSonarQubeEnv('sonar') {
+                sh 'mvn -f SampleWebApp/pom.xml clean package sonar:sonar'
+              }
+            }
+          }
+        
         stage('Build with Maven') {
             steps {
                 sh 'cd SampleWebApp && mvn clean package -Dbuild.number=${BUILD_NUMBER}'
